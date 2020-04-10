@@ -1,0 +1,26 @@
+{
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "jest": true,
+    "es6": true
+  },
+  "plugins": ["react", "jsx-ally", "import", "prettier"],
+  "extends": ["airbnb", "prettier"],
+  "rules": {
+    "react/jsx-filename-extension": [
+      "error",
+      {
+        "extensions": [".js", ".jsx"]
+      }
+    ],
+    "max-len": ["warn", { "code": 150 }],
+    "consistent-return": "warn",
+    "prefer-destructuring": "warn",
+    "global-require": "off",
+    "no-unused-vars": "warn",
+    "no-console": "warn",
+    "import/prefer-default-export": "off",
+    "no-unused-expressions": ["error", { "allowTaggedTemplates": true }]
+  }
+}
