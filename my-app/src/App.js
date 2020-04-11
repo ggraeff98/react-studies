@@ -3,44 +3,67 @@ import './App.css';
 import Person from './Person/Person';
 
 const App = (props) => {
-  const [personsState, setPersonsState] = useState({
-    persons: [
+  const [peopleState, setpeopleState] = useState({
+    people: [
       { name: 'Gustavo', age: 21 },
       { name: 'Laura', age: 18 }
     ]
   });
 
-  const switchNameHandler = (newName) => {
-    setPersonsState({
-      persons: [
-        { name: newName, age: 21 },
-        { name: 'Laura', age: 18 }
-      ]
+  const switchNameHandler = (event, index) => {
+    const people = peopleState.people;
+    people[index].name = event;
+    setpeopleState({
+      people
     });
   };
 
-  const nameChangeHandler = (event) => {
-    switchNameHandler(event.target.value);
+  const nameChangeHandler = (event, index) => {
+    switchNameHandler(event.target.value, index);
   };
+
+  const [showPeopleState, setShowPeopleState] = useState({
+    showPeople: false
+  });
+
+  const toggleShowPeopleHandler = (show) => {
+    setShowPeopleState({
+      showPeople: show
+    });
+  };
+
+  let persons = null;
+
+  if (showPeopleState.showPeople) {
+    persons = (
+      <div>
+        {peopleState.people.map((person, index) => {
+          return (
+            <Person
+              name={person.name}
+              age={person.age}
+              changed={(e) => nameChangeHandler(e, index)}
+              key={index}
+            ></Person>
+          );
+        })}
+      </div>
+    );
+  }
 
   return (
     <div className="App">
+      <div>{peopleState.showPeople}</div>
       <h1>Hello World</h1>
-      <button onClick={switchNameHandler.bind(this, 'Gustavooooo')}>
-        Switch Person
-      </button>
-      <Person
-        name={personsState.persons[0].name}
-        age={personsState.persons[0].age}
-        click={switchNameHandler.bind(this, 'Gustavo')}
-        changed={nameChangeHandler}
+      <button
+        onClick={toggleShowPeopleHandler.bind(
+          this,
+          !showPeopleState.showPeople
+        )}
       >
-        Eitcha
-      </Person>
-      <Person
-        name={personsState.persons[1].name}
-        age={personsState.persons[1].age}
-      ></Person>
+        Show People
+      </button>
+      {persons}
     </div>
   );
 };

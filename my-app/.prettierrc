@@ -1,5 +1,7 @@
 {
   "singleQuote": true,
   "semi": true,
-  "arrowParens": "always"
+  "arrowParens": "always",
+  "singleAttributePerLine": true,
+  "html.format.wrapAttributes": "force-aligned"
 }
