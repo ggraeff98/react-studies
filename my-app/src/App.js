@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import './App.css';
 import Person from './Person/Person';
+import styled from 'styled-components';
+
+const StyledAppDiv = styled.div`
+  background-color: ${(props) => (props.altStyle ? 'yellow' : 'green')};
+`;
 
 const App = (props) => {
   const [peopleState, setpeopleState] = useState({
@@ -52,7 +57,7 @@ const App = (props) => {
   }
 
   return (
-    <div className="App">
+    <StyledAppDiv altStyle={showPeopleState.showPeople}>
       <div>{peopleState.showPeople}</div>
       <h1>Hello World</h1>
       <button
@@ -64,7 +69,7 @@ const App = (props) => {
         Show People
       </button>
       {persons}
-    </div>
+    </StyledAppDiv>
   );
 };
 
