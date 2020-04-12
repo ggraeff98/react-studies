@@ -1,2 +1,2 @@
 # react-studies
-This repository was created tomy react.js studies
+This repository was created to my react.js studies
