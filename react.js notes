@@ -1,0 +1,5 @@
+Stateful component -> smart component, msanipulate state
+Stateless component - dumb component, just show content, doesn't manipulate state
+
+class-based component -> access state & lifecycle hooks
+functional components -> access state but not lifecycle hooks

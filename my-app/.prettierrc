@@ -2,6 +2,7 @@
   "singleQuote": true,
   "semi": true,
   "arrowParens": "always",
-  "singleAttributePerLine": true,
-  "html.format.wrapAttributes": "force-aligned"
+  "printWidth": 90,
+  "bracketSpacing": true,
+  "jsxBracketSameLine": false
 }

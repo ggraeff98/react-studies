@@ -60,12 +60,7 @@ const App = (props) => {
     <StyledAppDiv altStyle={showPeopleState.showPeople}>
       <div>{peopleState.showPeople}</div>
       <h1>Hello World</h1>
-      <button
-        onClick={toggleShowPeopleHandler.bind(
-          this,
-          !showPeopleState.showPeople
-        )}
-      >
+      <button onClick={toggleShowPeopleHandler.bind(this, !showPeopleState.showPeople)}>
         Show People
       </button>
       {persons}
