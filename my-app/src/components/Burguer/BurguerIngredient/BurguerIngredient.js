@@ -11,7 +11,7 @@ const BreadBottomStyle = styled.div`
   margin: 2% auto;
 `;
 
-const BreadTopStyled = styled.deiv`
+const BreadTopStyled = styled.div`
   height: 20%;
   width: 80%;
   background: linear-gradient(#bc581e, #e27b36);
@@ -128,7 +128,7 @@ const burguerIngredient = (props) => {
       return <BreadBottomStyle></BreadBottomStyle>;
     case 'meat':
       return <MeatStyled></MeatStyled>;
-    case 'chees':
+    case 'cheese':
       return <CheeseStyled></CheeseStyled>;
     case 'salad':
       return <SaladStyled></SaladStyled>;
