@@ -14,7 +14,7 @@
         "extensions": [".js", ".jsx"]
       }
     ],
-    "max-len": ["warn", { "code": 150 }],
+    "max-len": ["warn", { "code": 90 }],
     "consistent-return": "warn",
     "prefer-destructuring": "warn",
     "global-require": "off",
