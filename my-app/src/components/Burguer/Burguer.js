@@ -41,24 +41,36 @@ const burguer = (props) => {
   //   }
   // );
 
-  const ingredients = Object.keys(props.ingredients).map((ingredientKey) => {
-    return {
-      type: ingredientKey,
-      amount: props.ingredients[ingredientKey]
-    };
-  });
+  const ingredients = Object.keys(props.ingredients)
+    .map((ingredientKey) => {
+      return props.ingredients[ingredientKey] > 0
+        ? {
+            type: ingredientKey,
+            amount: props.ingredients[ingredientKey]
+          }
+        : null;
+    })
+    .filter((ingredient) => ingredient && ingredient.amount);
 
   const fullBurguer = [];
-  ingredients.forEach((ingredient) => {
-    for (let i = 0; i < ingredient.amount; i++) {
-      fullBurguer.push(
-        <BurgueIngredient
-          type={ingredient.type}
-          key={ingredient.type + i}
-        ></BurgueIngredient>
-      );
-    }
-  });
+
+  const setFullBurguer = () => {
+    ingredients.forEach((ingredient) => {
+      if (!ingredient) return;
+      for (let i = 0; i < ingredient.amount; i++) {
+        fullBurguer.push(
+          <BurgueIngredient
+            type={ingredient.type}
+            key={ingredient.type + i}
+          ></BurgueIngredient>
+        );
+      }
+    });
+  };
+
+  ingredients.length
+    ? setFullBurguer()
+    : fullBurguer.push(<p key="default">Please start adding ingredients!</p>);
 
   return (
     <BurguerStyledDiv>
