@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Aux from '../../hoc/Aux';
 import Burguer from '../../components/Burguer/Burguer';
 import BuildControls from '../../components/Burguer/BuildControls/BuildControls';
+import Modal from '../../components/UI/Modal/Modal';
+import OrderSummary from '../../components/Burguer/OrderSummary/OrderSummary';
 
 const INGREDIENTS_PRICES = {
   salad: 0.5,
@@ -19,7 +21,8 @@ const BurguerBuilder = () => {
       meat: 0
     },
     totalPrice: 4,
-    purchasable: false
+    purchasable: false,
+    purchasing: false
   });
 
   const updatePurchaseState = (ingredients, totalPrice) => {
@@ -28,6 +31,7 @@ const BurguerBuilder = () => {
     }, 0);
 
     setIngridientsState({
+      ...ingredientsState,
       ingredients,
       totalPrice,
       purchasable: ingredientsAmount > 0
@@ -74,6 +78,23 @@ const BurguerBuilder = () => {
     updatePurchaseState(ingredients, totalPrice);
   };
 
+  const purchaseHandler = () => {
+    console.log('purchaseHandler');
+    setIngridientsState({
+      ...ingredientsState,
+      purchasing: !ingredientsState.purchasing
+    });
+  };
+
+  const purchaseCancel = () => {
+    console.log('aaaaaaa');
+    purchaseHandler();
+  };
+
+  const purchaseContinue = () => {
+    alert('You continue');
+  };
+
   const disabledInfo = {
     ...ingredientsState.ingredients
   };
@@ -84,13 +105,22 @@ const BurguerBuilder = () => {
 
   return (
     <Aux>
+      <Modal show={ingredientsState.purchasing} closeModal={purchaseHandler}>
+        <OrderSummary
+          ingredients={ingredientsState.ingredients}
+          successClicked={purchaseContinue}
+          dangerClicked={purchaseCancel}
+          price={ingredientsState.totalPrice}
+        ></OrderSummary>
+      </Modal>
       <Burguer ingredients={ingredientsState.ingredients}></Burguer>
       <BuildControls
         ingredientAdded={addIngredientHandler}
         ingredientRemoved={removeIngredientHandler}
         disabled={disabledInfo}
         price={ingredientsState.totalPrice}
-        puschasable={ingredientsState.purchasable}
+        purschasable={ingredientsState.purchasable}
+        purschasing={purchaseHandler}
       ></BuildControls>
     </Aux>
   );
