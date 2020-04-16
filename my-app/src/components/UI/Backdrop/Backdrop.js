@@ -13,7 +13,7 @@ const StyledBackdropDiv = styled.div`
 
 const backdrop = (props) => {
   return props.show ? (
-    <StyledBackdropDiv onClick={props.onCloseModal}></StyledBackdropDiv>
+    <StyledBackdropDiv onClick={props.onCloseModal}>{props.children}</StyledBackdropDiv>
   ) : null;
 };
 
