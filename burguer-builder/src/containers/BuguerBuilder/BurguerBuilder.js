@@ -4,6 +4,9 @@ import Burguer from '../../components/Burguer/Burguer';
 import BuildControls from '../../components/Burguer/BuildControls/BuildControls';
 import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burguer/OrderSummary/OrderSummary';
+import axios from '../../axios-orders';
+import Spinner from '../../components/UI/Spinner/Spinner';
+import WithErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 const INGREDIENTS_PRICES = {
   salad: 0.5,
@@ -35,6 +38,16 @@ const BurguerBuilder = () => {
       ingredients,
       totalPrice,
       purchasable: ingredientsAmount > 0
+    });
+  };
+
+  const [spinnerState, setSpinnerState] = useState({
+    isLoading: false
+  });
+
+  const spinnerHandler = (isLoading) => {
+    setSpinnerState({
+      isLoading
     });
   };
 
@@ -92,7 +105,33 @@ const BurguerBuilder = () => {
   };
 
   const purchaseContinue = () => {
-    alert('You continue');
+    spinnerHandler(true);
+    const order = {
+      ingredients: ingredientsState.ingredients,
+      price: ingredientsState.totalPrice.toFixed(2),
+      customer: {
+        name: 'Gustavo Graeff',
+        address: {
+          steert: 'Teststreet 111',
+          zipCode: '123456789',
+          country: 'Brazil'
+        },
+        email: 'gustavo@mail.com'
+      },
+      deliveryMethod: 'fastest'
+    };
+    axios
+      .post('/orders.jsonnn', order)
+      .then((response) => {
+        spinnerHandler(false);
+        purchaseHandler();
+        console.log(response);
+      })
+      .catch((error) => {
+        spinnerHandler(false);
+        purchaseHandler();
+        console.log(error);
+      });
   };
 
   const disabledInfo = {
@@ -103,15 +142,27 @@ const BurguerBuilder = () => {
     disabledInfo[key] = disabledInfo[key] <= 0;
   }
 
+  const ordersToShow = spinnerState.isLoading ? (
+    <Spinner></Spinner>
+  ) : (
+    <OrderSummary
+      ingredients={ingredientsState.ingredients}
+      successClicked={purchaseContinue}
+      dangerClicked={purchaseCancel}
+      price={ingredientsState.totalPrice}
+    ></OrderSummary>
+  );
+
   return (
     <Aux>
       <Modal show={ingredientsState.purchasing} closeModal={purchaseHandler}>
-        <OrderSummary
+        {/* <OrderSummary
           ingredients={ingredientsState.ingredients}
           successClicked={purchaseContinue}
           dangerClicked={purchaseCancel}
           price={ingredientsState.totalPrice}
-        ></OrderSummary>
+        ></OrderSummary> */}
+        {ordersToShow}
       </Modal>
       <Burguer ingredients={ingredientsState.ingredients}></Burguer>
       <BuildControls
@@ -126,4 +177,4 @@ const BurguerBuilder = () => {
   );
 };
 
-export default BurguerBuilder;
+export default WithErrorHandler(BurguerBuilder, axios);
