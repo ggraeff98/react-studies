@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Aux from '../../hoc/Aux';
 import Burguer from '../../components/Burguer/Burguer';
 import BuildControls from '../../components/Burguer/BuildControls/BuildControls';
@@ -6,7 +6,7 @@ import Modal from '../../components/UI/Modal/Modal';
 import OrderSummary from '../../components/Burguer/OrderSummary/OrderSummary';
 import axios from '../../axios-orders';
 import Spinner from '../../components/UI/Spinner/Spinner';
-import WithErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
+import withErrorHandler from '../../hoc/withErrorHandler/withErrorHandler';
 
 const INGREDIENTS_PRICES = {
   salad: 0.5,
@@ -17,16 +17,33 @@ const INGREDIENTS_PRICES = {
 
 const BurguerBuilder = () => {
   const [ingredientsState, setIngridientsState] = useState({
-    ingredients: {
-      salad: 0,
-      bacon: 0,
-      cheese: 0,
-      meat: 0
-    },
+    ingredients: {},
     totalPrice: 4,
     purchasable: false,
-    purchasing: false
+    purchasing: false,
+    error: false
   });
+
+  useEffect(() => {
+    spinnerHandler(true);
+    axios
+      .get('/ingredients.json')
+      .then((response) => {
+        setIngridientsState({
+          ...ingredientsState,
+          ingredients: response.data
+        });
+        spinnerHandler(false);
+      })
+      .catch((error) => {
+        setIngridientsState({
+          ...ingredientsState,
+          error: true
+        });
+        spinnerHandler(false);
+      });
+    // eslint-disable-next-line
+  }, [ingredientsState.error]);
 
   const updatePurchaseState = (ingredients, totalPrice) => {
     const ingredientsAmount = Object.values(ingredients).reduce((sum, el) => {
@@ -92,7 +109,6 @@ const BurguerBuilder = () => {
   };
 
   const purchaseHandler = () => {
-    console.log('purchaseHandler');
     setIngridientsState({
       ...ingredientsState,
       purchasing: !ingredientsState.purchasing
@@ -100,7 +116,6 @@ const BurguerBuilder = () => {
   };
 
   const purchaseCancel = () => {
-    console.log('aaaaaaa');
     purchaseHandler();
   };
 
@@ -121,16 +136,14 @@ const BurguerBuilder = () => {
       deliveryMethod: 'fastest'
     };
     axios
-      .post('/orders.jsonnn', order)
+      .post('/orders.json', order)
       .then((response) => {
         spinnerHandler(false);
         purchaseHandler();
-        console.log(response);
       })
       .catch((error) => {
         spinnerHandler(false);
         purchaseHandler();
-        console.log(error);
       });
   };
 
@@ -153,28 +166,33 @@ const BurguerBuilder = () => {
     ></OrderSummary>
   );
 
+  const showingBurguer =
+    spinnerState.isLoading && !Object.keys(ingredientsState.ingredients).length ? (
+      <Spinner></Spinner>
+    ) : ingredientsState.error ? (
+      <p>Ingredients can't be loaded!</p>
+    ) : (
+      <Aux>
+        <Burguer ingredients={ingredientsState.ingredients}></Burguer>
+        <BuildControls
+          ingredientAdded={addIngredientHandler}
+          ingredientRemoved={removeIngredientHandler}
+          disabled={disabledInfo}
+          price={ingredientsState.totalPrice}
+          purschasable={ingredientsState.purchasable}
+          purschasing={purchaseHandler}
+        ></BuildControls>
+      </Aux>
+    );
+
   return (
     <Aux>
       <Modal show={ingredientsState.purchasing} closeModal={purchaseHandler}>
-        {/* <OrderSummary
-          ingredients={ingredientsState.ingredients}
-          successClicked={purchaseContinue}
-          dangerClicked={purchaseCancel}
-          price={ingredientsState.totalPrice}
-        ></OrderSummary> */}
         {ordersToShow}
       </Modal>
-      <Burguer ingredients={ingredientsState.ingredients}></Burguer>
-      <BuildControls
-        ingredientAdded={addIngredientHandler}
-        ingredientRemoved={removeIngredientHandler}
-        disabled={disabledInfo}
-        price={ingredientsState.totalPrice}
-        purschasable={ingredientsState.purchasable}
-        purschasing={purchaseHandler}
-      ></BuildControls>
+      {showingBurguer}
     </Aux>
   );
 };
 
-export default WithErrorHandler(BurguerBuilder, axios);
+export default withErrorHandler(BurguerBuilder, axios);

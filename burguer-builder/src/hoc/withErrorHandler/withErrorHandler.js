@@ -15,16 +15,20 @@ const withErrorHandler = (WrappedComponent, axios) => {
     };
 
     useEffect(() => {
-      axios.interceptors.response.use((req) => {
+      const reqInterceptor = axios.interceptors.request.use((req) => {
         errorHandler(null);
         return req;
       });
-      axios.interceptors.response.use(
+      const resInterceptor = axios.interceptors.response.use(
         (res) => res,
         (error) => {
           errorHandler(error);
         }
       );
+      return () => {
+        axios.interceptors.request.eject(reqInterceptor);
+        axios.interceptors.response.eject(resInterceptor);
+      };
     }, []);
 
     return (
@@ -32,7 +36,7 @@ const withErrorHandler = (WrappedComponent, axios) => {
         <Modal show={errorState.error} closeModal={() => errorHandler(null)}>
           {errorState.error ? errorState.error.message : null}
         </Modal>
-        <WrappedComponent {...props}></WrappedComponent>;
+        <WrappedComponent {...props}></WrappedComponent>
       </Aux>
     );
   };
