@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import BurgueIngredient from './BurguerIngredient/BurguerIngredient';
+import { withRouter } from 'react-router-dom';
 
 const BurguerStyledDiv = styled.div`
   width: 100%;
@@ -81,4 +82,4 @@ const burguer = (props) => {
   );
 };
 
-export default burguer;
+export default withRouter(burguer);

@@ -25,8 +25,12 @@ const checkoutSummary = (props) => {
       <StyledBurguerDivContainer>
         <Burguer ingredients={props.ingredients}></Burguer>
       </StyledBurguerDivContainer>
-      <Button buttonType={'Danger'}>CANCEL</Button>
-      <Button buttonType={'Success'}>CONTINUE</Button>
+      <Button buttonType={'Danger'} clicked={props.checkoutCancel}>
+        CANCEL
+      </Button>
+      <Button buttonType={'Success'} clicked={props.checkoutContinue}>
+        CONTINUE
+      </Button>
     </StyledDivContainer>
   );
 };

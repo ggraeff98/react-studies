@@ -3,6 +3,7 @@ import Layout from './components/Layout/Layout';
 import styled from 'styled-components';
 import BurguerBuilder from './containers/BuguerBuilder/BurguerBuilder';
 import Checkout from './containers/Checkout/Checkout';
+import { Route, Switch } from 'react-router-dom';
 
 const StyledAppDiv = styled.div`
   margin: 0;
@@ -14,8 +15,12 @@ const app = () => {
   return (
     <StyledAppDiv>
       <Layout>
-        <BurguerBuilder></BurguerBuilder>
-        <Checkout></Checkout>
+        {/* <BurguerBuilder></BurguerBuilder> */}
+        {/* <Checkout></Checkout> */}
+        <Switch>
+          <Route path="/checkout" exact component={Checkout}></Route>
+          <Route path="/" exact component={BurguerBuilder}></Route>
+        </Switch>
       </Layout>
     </StyledAppDiv>
   );

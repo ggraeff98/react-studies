@@ -15,7 +15,7 @@ const INGREDIENTS_PRICES = {
   bacon: 0.7
 };
 
-const BurguerBuilder = () => {
+const BurguerBuilder = (props) => {
   const [ingredientsState, setIngridientsState] = useState({
     ingredients: {},
     totalPrice: 4,
@@ -120,31 +120,42 @@ const BurguerBuilder = () => {
   };
 
   const purchaseContinue = () => {
-    spinnerHandler(true);
-    const order = {
-      ingredients: ingredientsState.ingredients,
-      price: ingredientsState.totalPrice.toFixed(2),
-      customer: {
-        name: 'Gustavo Graeff',
-        address: {
-          steert: 'Teststreet 111',
-          zipCode: '123456789',
-          country: 'Brazil'
-        },
-        email: 'gustavo@mail.com'
-      },
-      deliveryMethod: 'fastest'
-    };
-    axios
-      .post('/orders.json', order)
-      .then((response) => {
-        spinnerHandler(false);
-        purchaseHandler();
-      })
-      .catch((error) => {
-        spinnerHandler(false);
-        purchaseHandler();
-      });
+    const queryparams = [];
+    for (let i in ingredientsState.ingredients) {
+      queryparams.push(
+        encodeURIComponent(i) + '=' + encodeURIComponent(ingredientsState.ingredients[i])
+      );
+    }
+    const queryString = queryparams.join('&');
+    props.history.push({
+      pathname: '/checkout',
+      search: '?' + queryString
+    });
+    // spinnerHandler(true);
+    // const order = {
+    //   ingredients: ingredientsState.ingredients,
+    //   price: ingredientsState.totalPrice.toFixed(2),
+    //   customer: {
+    //     name: 'Gustavo Graeff',
+    //     address: {
+    //       steert: 'Teststreet 111',
+    //       zipCode: '123456789',
+    //       country: 'Brazil'
+    //     },
+    //     email: 'gustavo@mail.com'
+    //   },
+    //   deliveryMethod: 'fastest'
+    // };
+    // axios
+    //   .post('/orders.json', order)
+    //   .then((response) => {
+    //     spinnerHandler(false);
+    //     purchaseHandler();
+    //   })
+    //   .catch((error) => {
+    //     spinnerHandler(false);
+    //     purchaseHandler();
+    //   });
   };
 
   const disabledInfo = {
