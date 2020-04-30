@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 
 const StyledItemsListLi = styled.li`
   margin: 10px 0;
@@ -17,11 +18,11 @@ const StyledItemsListLi = styled.li`
   }
 `;
 
-const StyledItemsLIstA = styled.a`
+const StyledItemsLIstA = styled(NavLink)`
   color: #8f5c2c;
   text-decoration: none;
   width: 100%;
-  color: ${(props) => (props.active ? '#40A4C8' : null)};
+  color: #40a4c8;
 
   @media (min-width: 500px) {
     color: white;
@@ -34,16 +35,18 @@ const StyledItemsLIstA = styled.a`
       color: white;
     }
 
-    background-color: ${(props) => (props.active ? '#8f5c2c' : null)};
-    border-bottom: ${(props) => (props.active ? '4px solid #40a4c8' : null)};
-    color: ${(props) => (props.active ? 'white' : null)};
+    &.active {
+      background-color: #8f5c2c;
+      border-bottom: 4px solid #40a4c8;
+      color: white;
+    }
   }
 `;
 
 const navigationItem = (props) => {
   return (
     <StyledItemsListLi>
-      <StyledItemsLIstA href={props.link} active={props.active}>
+      <StyledItemsLIstA to={props.link} exact={props.exact}>
         {props.children}
       </StyledItemsLIstA>
     </StyledItemsListLi>

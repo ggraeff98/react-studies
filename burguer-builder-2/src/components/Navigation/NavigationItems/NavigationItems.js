@@ -19,10 +19,10 @@ const StyledItemsLIstUl = styled.ul`
 const navigationItems = () => {
   return (
     <StyledItemsLIstUl>
-      <NavigationItem link="/" active={true}>
+      <NavigationItem link="/" exact>
         Burguer Builder
       </NavigationItem>
-      <NavigationItem link="/">Checkout</NavigationItem>
+      <NavigationItem link="/orders">Orders</NavigationItem>
     </StyledItemsLIstUl>
   );
 };

@@ -82,4 +82,4 @@ const burguer = (props) => {
   );
 };
 
-export default withRouter(burguer);
+export default burguer;

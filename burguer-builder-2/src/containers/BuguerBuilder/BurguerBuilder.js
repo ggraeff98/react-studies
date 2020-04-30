@@ -126,36 +126,12 @@ const BurguerBuilder = (props) => {
         encodeURIComponent(i) + '=' + encodeURIComponent(ingredientsState.ingredients[i])
       );
     }
+    queryparams.push('price=' + ingredientsState.totalPrice.toFixed(2));
     const queryString = queryparams.join('&');
     props.history.push({
       pathname: '/checkout',
       search: '?' + queryString
     });
-    // spinnerHandler(true);
-    // const order = {
-    //   ingredients: ingredientsState.ingredients,
-    //   price: ingredientsState.totalPrice.toFixed(2),
-    //   customer: {
-    //     name: 'Gustavo Graeff',
-    //     address: {
-    //       steert: 'Teststreet 111',
-    //       zipCode: '123456789',
-    //       country: 'Brazil'
-    //     },
-    //     email: 'gustavo@mail.com'
-    //   },
-    //   deliveryMethod: 'fastest'
-    // };
-    // axios
-    //   .post('/orders.json', order)
-    //   .then((response) => {
-    //     spinnerHandler(false);
-    //     purchaseHandler();
-    //   })
-    //   .catch((error) => {
-    //     spinnerHandler(false);
-    //     purchaseHandler();
-    //   });
   };
 
   const disabledInfo = {
